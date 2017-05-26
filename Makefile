@@ -1,5 +1,8 @@
 all:
-	g++ -Wall -o cripto main.cpp cripto.cpp
+	gcc -Wall -o rsa rsa.c -lm
 
 clean:
-	rm cripto
+	rm rsa out.txt
+
+install:
+	./rsa e README.md out.txt
