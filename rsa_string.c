@@ -87,7 +87,10 @@ int main(int argc, char const *argv[]) {
 	f_size = ftell(input_file);
 	printf("FILE SIZE %d\n", f_size);
 	rewind(input_file);
+	printf("mode %c\n", mode);
+	printf("TESTE 1\n");
 	if(mode == 'e'){
+		printf("ENCRYPTING\n");
 		input.plain_input = (char*)malloc(f_size*sizeof(char));
 		if(input.plain_input == NULL){
 			printf("ERROR: Insuficient memory.\n");
@@ -114,6 +117,7 @@ int main(int argc, char const *argv[]) {
 			return MEMORY_ALLOCATION_ERROR;
 		}
 		//wesley -- problema aqui
+		printf("DECRYPTING\n");
 		result = fread(input.plain_input, 1, f_size, input_file);
 		if(result == 0){
 			printf("ERROR: Failed reading file.\n");
@@ -121,12 +125,15 @@ int main(int argc, char const *argv[]) {
 			fclose(output_file);
 			return FILE_READING_ERROR;
 		}
-
+			input.plain_input[f_size-1] = '\0';
 			printf("%s\n", input.plain_input);
-			scanf("%s\n", &cont);
+			printf("%c -- %d\n", input.plain_input[f_size-1], input.plain_input[f_size-1]);
+
+			//scanf("%s\n", &cont);
 	}
+	printf("OUT\n");
 	printf("input_size %d\n", result);
-	scanf("%s\n", &cont);
+	//scanf("%s\n", &cont);
 
 
 	// Logica RSA
@@ -191,7 +198,7 @@ int main(int argc, char const *argv[]) {
 				strcat(print, " ");
 			}
 		}
-		fprintf(output_file, "%s\n", print);
+		fprintf(output_file, "%s", print);
 		/*
 		result = fwrite(output.cypher_output, sizeof(double), f_size, output_file);
 		if(result == 0){
