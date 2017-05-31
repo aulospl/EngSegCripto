@@ -1,3 +1,5 @@
+import math
+
 class RSA(object):
 	publicKey = None
 	privateKey = None
@@ -21,7 +23,6 @@ class RSA(object):
 
 	def findPrivateKey(self):
 		phi = (self.p-1)*(self.q-1)
-
 		while (self.e < phi):
 			if (self.gcd(self.e, phi) == 1):
 				break
@@ -30,20 +31,31 @@ class RSA(object):
 
 		self.privateKey = (1+(self.k*phi))/self.e
 
+	#Criptografa a mensagem
 	def encrypt(self, message):
 		i = 0
 		for char in message:
+			#Converte valor de char para ascii
 			cypher = ord(char) ** self.e
 			cypher = cypher % self.publicKey
 			self.cypherText += str(cypher)
 			i += 1
+			#Verifica se chegou ao fim da string, se não adiciona separador
 			if i != len(message):
 				self.cypherText += " "
-		print(self.cypherText)
 
+		#Salva texto criptografado em arquivo
+		out = open('encrypted.txt', 'w')
+		out.write(self.cypherText)
+
+	#Decriptografa a mensage
 	def decrypt(self, message):
+		#Quebra em tokens para leitura
 		tokens = message.split()
 		for tok in tokens:
 			cypher = int(tok) ** int(self.privateKey)
-			print(cypher)
 			cypher = cypher % int(self.publicKey)
+			self.plainText += chr(cypher)
+		#Salva texto decriptografado em arquivo
+		out = open('decrypted.txt', 'w')
+		out.write(self.plainText)

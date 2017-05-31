@@ -1,14 +1,30 @@
 import rsa
+import sys
 
-alg = rsa.RSA(3, 7, 2, 2)
+if len(sys.argv) != 3:
+	print("Argumentos inválidos")
+	sys.exit()
+
+#Cria objeto RSA
+alg = rsa.RSA(13, 17, 2, 2)
 
 alg.findPublicKey()
-print(getattr(alg, 'publicKey'))
 
 alg.findPrivateKey()
-print(getattr(alg, 'privateKey'))
 
-print("Encrypting")
-alg.encrypt("hello")
-print("Decrypting")
-alg.decrypt("20 5 12 12 6")
+#Leitura de arquivo de entrada
+inpString = ""
+inp = open(sys.argv[2], 'r')
+for line in inp:
+	inpString += line
+
+#Limpa fim da string
+inpString = inpString.rstrip()
+
+#Determina modo de operação
+if sys.argv[1] == 'e':
+	alg.encrypt(inpString)
+elif sys.argv[1] == 'd':
+	alg.decrypt(inpString)
+else:
+	print("Argumento inválido -- [e|d]")
